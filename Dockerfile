@@ -8,8 +8,12 @@ ENV POETRY_NO_INTERACTION=1 \
 	POETRY_VIRTUALENVS_CREATE=1 \
 	PYTHONUNBUFFERED="true"
 
-
-COPY pyproject.toml poetry.lock README.md ./
+# this readme is necessary otherwise poetry install
+# and instead of actual readme we're echoing a dummy one
+# to remove dependency of the actual readme file on the
+# the docker build cache
+RUN echo "reverie nlp service" > README.md
+COPY pyproject.toml poetry.lock ./
 RUN --mount=type=cache,target=/root/.cache/pypoetry poetry install 
 
 COPY . /app/
