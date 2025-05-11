@@ -15,9 +15,9 @@ class SentimentClassifier:
             model="distilbert-base-uncased-finetuned-sst-2-english",
         )
 
-    def classify(self, text: str) -> list[SentimentAnalysisResult]:
+    def classify(self, text: str) -> SentimentAnalysisResult:
         output = self.classifier(text)  # type: ignore
-        return [SentimentAnalysisResult(**i) for i in output]  # type: ignore
+        return [SentimentAnalysisResult(**i) for i in output][0]  # type: ignore
 
 
 if __name__ == "__main__":

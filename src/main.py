@@ -46,7 +46,7 @@ class TextIn(BaseModel):
 
 class AnalysisOut(BaseModel):
     emotions: list[EmotionAnalysisResult]
-    sentiment: list[SentimentAnalysisResult]
+    sentiment: SentimentAnalysisResult
     keywords: list[str]
 
 
