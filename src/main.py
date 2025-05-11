@@ -66,4 +66,3 @@ async def analyze_text(request: TextIn):
 @app.get("/")
 def root():
     return {"message": "Service healthy and running successfully 🚀"}
-
