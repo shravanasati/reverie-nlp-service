@@ -30,32 +30,8 @@ jobs:
         docker build -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/reverie_nlp_service:latest .
         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/reverie_nlp_service:latest
 
-    - name: Check if Azure Container App exists
-      id: check_container_app
-      run: |
-        az containerapp show --name reverie-nlp --resource-group reverie-rg > /dev/null 2>&1
-        echo "Container app exists? $? (0 = exists, 1 = does not exist)"
-      continue-on-error: true
-    
-    - name: Create Azure Container App if not exists
-      if: steps.check_container_app.outcome == 'failure'
-      run: |
-        echo "Creating Azure Container App..."
-        az containerapp create \
-          --name reverie-nlp \
-          --resource-group reverie-rg \
-          --environment reverie-env \
-          --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/reverie_nlp_service:latest \
-          --registry-server ${{ secrets.REGISTRY_LOGIN_SERVER }} \
-          --registry-username ${{ secrets.REGISTRY_USERNAME }} \
-          --registry-password ${{ secrets.REGISTRY_PASSWORD }} \
-          --target-port 80 \
-          --ingress external
-
     - name: Deploy to Azure Container Apps
-      if: steps.check_container_app.outcome == 'success'
       run: |
-        echo "Updating Azure Container App..."
         az containerapp update \
           --name reverie-nlp \
           --resource-group reverie-rg \
