@@ -6,7 +6,9 @@ class KeywordExtractor:
         self.kw_model = KeyBERT()
 
     def extract(self, text: str):
-        keywords_with_scores = self.kw_model.extract_keywords(text)
+        keywords_with_scores = self.kw_model.extract_keywords(
+            text, keyphrase_ngram_range=(1, 2), top_n=10
+        )
         return [keyword for keyword, score in keywords_with_scores]
 
 
